@@ -1,0 +1,6 @@
+The design splits into three layers that shouldn't be conflated: identity (passport NFC verification off-chain, only a hash/attestation on-chain), reserves (fiat held with a regulated bank, verified via an on-chain proof-of-reserve oracle), and token (an ERC-20 on Base with compliance hooks at mint/redeem).
+A few decisions worth flagging as things you'll want legal/compliance input on rather than pure engineering calls:
+
+Whether transfers require both parties KYC'd, or only mint/redeem (most real-world stablecoins pick the latter for DeFi composability),
+Per-passport vs. per-human Sybil resistance (dual citizens have two valid passports),
+Regulatory classification of the token itself, which determines your whole compliance stack.
