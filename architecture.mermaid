@@ -1,0 +1,73 @@
+flowchart TB
+    subgraph User["User Layer"]
+        U1[Citizen / Traveler]
+        U2[Merchant]
+        U3[Correspondent Bank / Foreign CBDC]
+    end
+
+    subgraph Identity["Identity & Verification Layer"]
+        A1[Passport NFC Chip Reader]
+        A2[Liveness + Biometric Match]
+        A3[ICAO PKD Signature Verification]
+        A4[Government Passport Registry API]
+        A5[Identity Commitment Generator ZK]
+    end
+
+    subgraph Oracle["Passport Strength Oracle"]
+        O1[Global Mobility Index Feed]
+        O2[Country Risk / Sanctions Feed]
+        O3[Score Aggregator & Publisher]
+    end
+
+    subgraph Core["Currency Core"]
+        C1[Identity-Bound Account Registry]
+        C2[Ledger - Account Balances]
+        C3[Value & Risk Modulation Engine]
+        C4[Exchange Rate / Fee Engine]
+        C5[Compliance Engine - AML CFT Sanctions]
+    end
+
+    subgraph Rails["Payment Rails"]
+        R1[Domestic Transfer Service]
+        R2[Cross-Border Remittance Gateway]
+        R3[ISO 20022 / SWIFT Bridge]
+        R4[Other CBDC / Stablecoin Bridge]
+    end
+
+    subgraph Gov["Governance"]
+        G1[Central Bank / Consortium Node]
+        G2[Auditor Nodes]
+        G3[Policy Parameters - limits, pegs]
+    end
+
+    U1 --> A1
+    A1 --> A2 --> A3 --> A4
+    A4 --> A5
+    A5 --> C1
+
+    O1 --> O3
+    O2 --> O3
+    O3 --> C3
+
+    C1 --> C2
+    C3 --> C4
+    C2 <--> C4
+    C5 --> C2
+    O3 --> C5
+
+    U1 --> R1
+    U2 --> R1
+    R1 --> C2
+
+    U1 --> R2
+    R2 --> C4
+    R2 --> C5
+    R2 --> R3
+    R2 --> R4
+    R3 --> U3
+    R4 --> U3
+
+    G1 --> G3 --> C3
+    G1 --> G3 --> C4
+    G2 --> C5
+    G2 --> C2
